@@ -1,0 +1,283 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Open Finance Initiative Prototype</title>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+
+    <link rel="stylesheet" href="http://whichlight.com/open_finance/style.css" type="text/css" media="screen" /> 
+
+  </head>
+  
+  
+  
+  
+  <body>
+    <div id="title">OPEN FINANCE INITIATIVE </div>
+    <div id="spacer"> </div>
+
+    <div id="about">
+        
+        We are developing tools to promote socially responsible investing and citizen engagement.
+        By providing a simple way to measure company's actions against your own moral standing,
+        we empower you with the information to collectively give an incentive for companies to <em>be good</em>. <br><br>
+        
+        <div id='how'>
+        If you're interested in hearing more, or want to collaborate, <a href ='contact.html' >get in touch with us</a>. <br>
+        </div>
+    
+    </div> <!-- about -->
+
+    <div id="spacer"> </div>
+    
+    <div id="input">
+        <div id="formInput">
+        What would be your threshold (0-100) for <br><br>
+        <form name = "vals">  Environmental rating?     <input type="text" name="e" /><br />
+                 Social rating?       <input type="text" name="s" /><br />
+                Governmental rating?     <input type="text" name="g" /><br />
+        </form> <!-- end form -->
+        <br />
+        <div id='how'>
+        <a href='http://whichlight.com/open_finance/details.html' >How these ratings determined</a>
+        </div> <!-- how -->
+        </div><!-- formInput-->
+        <div id="buttonInput">
+            <img src = 'icons/go.gif' width=100/>
+        </div><!-- button -->
+        
+    </div> <!-- input -->
+    
+    
+    <div id="spacer"> </div>
+
+
+    <div id="co_list">
+      
+    
+    </div> <!-- co_list -->
+
+    
+    <script type="text/javascript">
+        
+        //function to wrap a string in a DIV tag
+        function wrapDiv(id, string){
+        return '<div id='+id+'>' + string + '</div>';
+        };
+        
+        function wrapA(id, string){
+        return '<a id='+id+' href="javascript:void(0);">' + string + '</a>';
+        };
+        
+        
+        
+        function wrapDivIMG(id, string, imgName){
+        var l = '<div id='+id+'>';
+        l+= "<img src = '" + imgName + "' , alt ='" + imgName +"'/> "+ string+"</div>";
+        return  l;
+        };
+        
+        function sortByProperty(array, property){
+        // Sorts 'array' in-place by property 'property'
+            if(property=="Company Name"){
+                array.sort(function(a,b){
+                    if((a[property]) > (b[property])){
+                       return +1;
+                   }
+                   if((a[property]) < (b[property])){
+                       return -1;
+                   }
+                   
+                   
+                   return 0;
+               });
+                    
+                
+            }
+            else{
+             array.sort(function(a, b){
+                //deal with N/A
+                if(a[property]=="N/A"){
+                    return +1;
+                }
+                if(b[property]=="N/A"){
+                    return -1;
+                }
+                   if(parseFloat(a[property]) < parseFloat(b[property])){
+                       return +1;
+                   }
+                   if(parseFloat(a[property]) > parseFloat(b[property])){
+                       return -1;
+                   }
+                   
+                   
+                   return 0;
+               });
+            }
+        }
+        
+        function clearTable(){
+            $("#table").remove()
+        }
+        
+        //vis data
+        function displayIcons(){
+            
+            //create table header
+        line = wrapDiv('cName',"Company Name");
+        line+= wrapDiv('eTitle',"Environment");
+        line+= wrapDiv('sTitle',"Social");
+        line+= wrapDiv('gTitle',"Governance");
+        items.push(wrapDiv('element',line));
+            
+              //display company icons
+        $.each(data, function(co) {
+            
+
+                    //set icons
+                    var eIcon;
+                    var sIcon;
+                    var gIcon;
+                                        
+                    if(data[co]["Environmental rating"]!="N/A"){
+                    (parseFloat(data[co]["Environmental rating"])>eThresh) ? eIcon = 'e_good' : eIcon = 'e_bad';
+                    (parseFloat(data[co]["Social rating"])>sThresh) ? sIcon = 's_good' : sIcon = 's_bad';
+                    (parseFloat(data[co]["Governance rating"])>gThresh) ? gIcon = 'g_good' : gIcon = 'g_bad';
+                    
+                    eIcon='icons/'+eIcon+'.gif';
+                    sIcon='icons/'+sIcon+'.gif';
+                    gIcon='icons/'+gIcon+'.gif';
+
+
+                    
+                    line = wrapDiv('name',data[co]["Company Name"]);
+                    line+= wrapDivIMG('eVal',data[co]["Environmental rating"], eIcon);
+                    line+= wrapDivIMG('sVal',data[co]["Social rating"],sIcon);
+                    line+= wrapDivIMG('gVal',data[co]["Governance rating"], gIcon);
+                    }
+                    else{
+                        line = wrapDiv('name',data[co]["Company Name"]);
+                        line += wrapDiv('fail','FAIL');
+                        line += wrapDiv('sVal',data[co]["Reason for exclusion"]);
+                    }
+                    
+                    items.push(wrapDiv('element',line));
+                  
+                  
+         }); //close each loop
+        $('<div>', {'id' : 'table', html: items.join('')}).appendTo('#co_list');
+        assignClickers();
+
+        };
+        
+        function assignClickers(){
+            
+              $("#cName").click(function(){
+                clearTable();
+                callJSON("Company Name");
+                currentOrder = "Company Name";
+                });
+              
+           $("#eTitle").click(function(){
+                clearTable();
+            currentOrder = "Environmental rating";
+
+            callJSON("Environmental rating");
+            });
+           
+           $("#sTitle").click(function(){
+                clearTable();
+             currentOrder = "Social rating";
+
+            callJSON("Social rating");
+            });
+           
+             $("#gTitle").click(function(){
+                clearTable();
+                currentOrder = "Governance rating";
+
+                callJSON("Governance rating");
+            });
+             
+              $("#buttonInput").click(function(){
+                clearTable();
+           //form values get
+        eThresh = parseFloat(document.forms.vals.elements.e.value);
+        sThresh = parseFloat(document.forms.vals.elements.s.value);
+        gThresh = parseFloat(document.forms.vals.elements.g.value);
+
+                callJSON(currentOrder);
+            });
+        }
+        
+        
+        
+        var items = [];
+        var eThresh = 50;
+        var sThresh = 50;
+        var gThresh = 50;
+        var data = [];
+        var dataLoc = 'http://whichlight.com/open_finance/sri_data_test.json';
+        var currentOrder = "Environmental rating";
+        
+        //form values set
+        document.forms.vals.elements.e.value = eThresh;
+        document.forms.vals.elements.s.value = sThresh;
+        document.forms.vals.elements.g.value = gThresh;
+        
+        
+
+                
+        
+        
+      //  $('<div>', {'id' : 'theader', html: items.join('')}).appendTo('#co_list');
+        
+
+        //pull from the JSON file the ESG values, stick em into a table
+        
+        
+        //getJSON is asynchronous, global vars cannot be declared inside, pull other functions in it
+        function callJSON(sortProperty){
+         
+        $.getJSON(dataLoc, function(obj){
+                data = [];
+                items = [];
+                  $.each(obj.sri, function(co) {
+                    if(co>0){
+                   data.push(obj.sri[co]); 
+                    }
+                  });
+                  
+                sortByProperty(data,sortProperty);
+                displayIcons();
+                
+                });
+        
+        };
+        
+        $(document).ready(function(){
+            
+        callJSON("Environmental rating");
+        
+
+        });
+        
+
+    </script>
+        
+    <div id="spacer"> </div>
+
+    <div id="footer">
+    <img src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" alt="creative_commons_icon"/> <br>
+    This work is <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-NonCommercial-ShareAlike</a>.<br>
+    Data kindly made open by <a href = "http://sustainalytics.com/stoxx-launches-global-esg-leaders-indices-collaboration-sustainalytics" > Stoxx and Sustainalytics.</a><br>
+
+    If you use the SRI data, you must abide by the Stoxx and Sustainalytics Terms of Service.
+    </div><!-- footer -->
+	
+	
+  </body>
+</html>
+
+

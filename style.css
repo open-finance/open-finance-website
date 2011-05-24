@@ -1,0 +1,146 @@
+/*
+Theme Name: Minimal for Open Finance
+Theme URI: 
+Description: A theme created by Kawandeep Virdee to design the Open Finance Initiative site
+Version: 1
+Author: Kawandeep Virdee
+Author URI: 
+Tags: fixed width, simple
+
+
+*/
+
+#title, #title a{
+    padding:70px;
+    text-align:center;
+    font-size:50px;
+    color:#43CC5D;
+    font-weight:500;
+    text-decoration: none;
+}
+
+#about{
+     width: 50%;
+    margin: auto;
+    font-family: "HelveticaNeue-Light";
+    font-size:20px;
+
+}
+
+#formInput{
+    
+}
+
+#input{
+  width: 50%;
+    margin: auto;
+    font-family: "HelveticaNeue-Light";
+    font-size:20px;
+    
+
+}
+#buttonInput {
+    display:inline;
+    float:right;
+    vertical-align:middle;
+    margin-top:20px;
+    cursor:pointer;
+
+}
+
+#formInput{
+    
+    display:inline;
+    float:left;
+}
+
+#how{
+    font-size:15px;
+}
+
+#howDetail{
+     width: 50%;
+    margin: auto;
+    font-family: "HelveticaNeue-Light";
+    font-size:20px;
+}
+
+#co_list{
+    width: 60%;
+    margin: auto;
+    padding: 30px;
+}
+
+#table {
+    
+}
+
+#element, #theader{
+    display: table-row;
+}
+
+ #sVal, #gVal, #eVal{
+    font-size: 15px;
+    padding: 10px;
+    display: table-cell;
+    color:#494948;
+    font-family: Helvetica;
+    text-align: center;
+}
+
+#fail{
+    font-size: 30px;
+    font-family: "Helvetica";
+    vertical-align:middle;
+    text-align: center;
+    color: red;
+    width:100%;
+    margin:auto;
+}
+
+#name{
+    font-size: 30px;
+    display: table-cell;
+    color:#494948;
+    font-family: "Helvetica";
+    font-weight:900;
+    vertical-align:middle;
+
+}
+
+
+#eTitle, #sTitle, #gTitle, #cName{
+    font-size: 15px;
+    padding: 10px;
+    display: table-cell;
+    color:#2F2F2F;
+    font-family: Arial;
+   cursor:pointer;
+       display: table-cell;
+
+
+}
+
+
+
+#footer{
+    width: 50%;
+    margin: auto;
+    padding: 30px;
+    text-align:center;
+    font-size:15px;
+    
+}
+
+#spacer {
+    width: 50%;
+    margin: auto;
+    position:relative;
+    height: 20px;
+    border-bottom:2px dotted #CCC;
+    margin-bottom:20px;
+    clear: both;
+    
+}
+
+
